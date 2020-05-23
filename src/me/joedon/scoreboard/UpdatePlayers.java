@@ -13,7 +13,7 @@ public class UpdatePlayers {
     private TabListPro plugin = JavaPlugin.getPlugin(TabListPro.class);
 
     private Scoreboard statsScoreboard(Player p) {
-   ////     Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
+        ////     Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
         Scoreboard scoreboard;
         if(Bukkit.getScoreboardManager().getMainScoreboard() != null) {
             //scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();

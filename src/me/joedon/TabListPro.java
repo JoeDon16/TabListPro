@@ -7,6 +7,7 @@ import me.joedon.scoreboard.UpdateScoreboard;
 import me.joedon.configs.TLUserConfigs;
 import me.joedon.tlpversiondetectors.*;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -19,6 +20,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 public class TabListPro extends JavaPlugin implements Listener, CommandExecutor {
 
@@ -48,6 +50,8 @@ public class TabListPro extends JavaPlugin implements Listener, CommandExecutor 
     }
 
     public void onEnable() {
+        apiinstance = this;
+
         usb = new UpdateScoreboard();
         up = new UpdatePlayers();
         epsb = new EPScoreboard();
@@ -197,4 +201,46 @@ public class TabListPro extends JavaPlugin implements Listener, CommandExecutor 
         }
     }
 
+    // API
+
+    private static TabListPro apiinstance;
+
+    public static TabListPro getInstance(){
+        return apiinstance;
+    }
+
+    public String setPlayerTabGroup(Player p, String groupID){
+        if (p != null) {
+            for (String keys : epsb.groupKeys) {
+                if (keys.replaceAll("groups\\.", "").equalsIgnoreCase(groupID)) {
+                    TLUserConfigs cm = new TLUserConfigs(JavaPlugin.getPlugin(TabListPro.class), p);
+                    FileConfiguration f = cm.getConfig();
+                    f.set("group", groupID);
+                    cm.reload();
+                    cm.saveConfig();
+                    epsb.group.put(p.getUniqueId().toString(), groupID);
+                    JavaPlugin.getPlugin(TabListPro.class).up.checkGroupUpdate(p);
+                    JavaPlugin.getPlugin(TabListPro.class).usb.updateboard();
+                    return "[TabListPro] Successfully set " + p.getName() + "'s group to " + groupID + "!";
+                }
+            }
+            return "[TabListPro] Group " + groupID + " not found in TabListPro's config.";
+        } else {
+            return "[TabListPro] The player is null.";
+        }
+    }
+
+    public List<String> getGroupAnimation(String groupID){
+        List<String> groupAnimation = new ArrayList<>();
+        for (String keys : epsb.groupKeys) {
+            if (keys.replaceAll("groups\\.", "").equalsIgnoreCase(groupID)) {
+                groupAnimation = getConfig().getStringList("groups." + keys + ".display");
+            }
+        }
+        return groupAnimation;
+    }
+
+    public int getGroupAnimationSpeed(){
+        return epsb.updateSpeedGlobal;
+    }
 }
