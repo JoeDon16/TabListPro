@@ -1,6 +1,9 @@
 package me.joedon;
 
+import com.google.common.collect.Lists;
 import com.google.common.io.ByteStreams;
+import it.unimi.dsi.fastutil.Hash;
+import me.clip.placeholderapi.PlaceholderAPI;
 import me.joedon.scoreboard.EPScoreboard;
 import me.joedon.scoreboard.UpdatePlayers;
 import me.joedon.scoreboard.UpdateScoreboard;
@@ -20,7 +23,9 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class TabListPro extends JavaPlugin implements Listener, CommandExecutor {
 
@@ -54,7 +59,7 @@ public class TabListPro extends JavaPlugin implements Listener, CommandExecutor 
 
         usb = new UpdateScoreboard();
         up = new UpdatePlayers();
-        epsb = new EPScoreboard();
+        epsb = new EPScoreboard(this);
 
         loadResource("config.yml");
         getConfig().options().copyDefaults(false);
@@ -230,14 +235,48 @@ public class TabListPro extends JavaPlugin implements Listener, CommandExecutor 
         }
     }
 
-    public List<String> getGroupAnimation(String groupID){
-        List<String> groupAnimation = new ArrayList<>();
-        for (String keys : epsb.groupKeys) {
-            if (keys.replaceAll("groups\\.", "").equalsIgnoreCase(groupID)) {
-                groupAnimation = getConfig().getStringList("groups." + keys + ".display");
+    private static Map<String, List<String>> groupAnimationsStripped = new HashMap<>();
+    public List<String> getGroupAnimationStripped(String groupID){
+        if(!groupAnimationsStripped.containsKey(groupID)) {
+            List<String> groupAnimation = new ArrayList<>();
+            for (String keys : epsb.groupKeys) {
+                if (keys.replaceAll("groups\\.", "").equalsIgnoreCase(groupID)) {
+                    groupAnimation = getConfig().getStringList("groups." + keys + ".display");
+                }
             }
+
+            for (int i = 0; i < groupAnimation.size(); i++) {
+                groupAnimation.set(i, groupAnimation.get(i).substring(groupAnimation.get(i).lastIndexOf("% ") + 2));
+            }
+
+            groupAnimationsStripped.put(groupID.toLowerCase(), groupAnimation);
+
+            return groupAnimation;
+        }else{
+            return groupAnimationsStripped.get(groupID);
         }
-        return groupAnimation;
+    }
+
+    private static Map<String, Map<Player, List<String>>> groupAnimations = new HashMap<>();
+    public List<String> getGroupAnimation(String groupID, Player player){
+        groupAnimations.putIfAbsent(groupID, new HashMap<>());
+        groupAnimations.get(groupID).putIfAbsent(player, Lists.newArrayList());
+        if(groupAnimations.get(groupID).get(player).isEmpty()) {
+            List<String> groupAnimation = new ArrayList<>();
+            for (String keys : epsb.groupKeys) {
+                if (keys.replaceAll("groups\\.", "").equalsIgnoreCase(groupID)) {
+                    groupAnimation = getConfig().getStringList("groups." + keys + ".display");
+                }
+            }
+
+            for (int i = 0; i < groupAnimation.size(); i++) {
+                groupAnimation.set(i, PlaceholderAPI.setPlaceholders(player, groupAnimation.get(i)));
+            }
+
+            groupAnimations.get(groupID).put(player, groupAnimation);
+        }
+
+        return groupAnimations.get(groupID).get(player);
     }
 
     public int getGroupAnimationSpeed(){

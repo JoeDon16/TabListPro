@@ -120,7 +120,7 @@ public class UpdatePlayers {
     public void updatePlaceholderAPIPlaceholders() {
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             for (Player p : Bukkit.getOnlinePlayers()) {
-                new EPScoreboard().updatePlayerPrefixSuffixPlaceholderString(p);
+                new EPScoreboard(plugin).updatePlayerPrefixSuffixPlaceholderString(p);
             }
         });
     }

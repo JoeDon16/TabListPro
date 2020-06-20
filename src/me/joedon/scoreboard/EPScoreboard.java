@@ -12,7 +12,11 @@ import java.util.*;
 
 public class EPScoreboard {
 
-    private TabListPro plugin = JavaPlugin.getPlugin(TabListPro.class);
+    private TabListPro plugin;
+
+    public EPScoreboard(TabListPro plugin){
+        this.plugin = plugin;
+    }
 
     public int updateSpeedGlobal;
     public int updateFrame = 0;
