@@ -235,6 +235,7 @@ public class TabListPro extends JavaPlugin implements Listener, CommandExecutor 
         }
     }
 
+    // ONLY FOR USE WITH EPTags, hardcoded much
     private static Map<String, List<String>> groupAnimationsStripped = new HashMap<>();
     public List<String> getGroupAnimationStripped(String groupID){
         if(!groupAnimationsStripped.containsKey(groupID.toLowerCase())) {
@@ -246,7 +247,11 @@ public class TabListPro extends JavaPlugin implements Listener, CommandExecutor 
             }
 
             for (int i = 0; i < groupAnimation.size(); i++) {
-                groupAnimation.set(i, groupAnimation.get(i).substring(groupAnimation.get(i).lastIndexOf("% ") + 2));
+                try {
+                    groupAnimation.set(i, groupAnimation.get(i).substring(groupAnimation.get(i).lastIndexOf("%") + 2));
+                }catch(Exception obe){
+                    groupAnimation.set(i, "");
+                }
             }
 
             groupAnimationsStripped.put(groupID.toLowerCase(), groupAnimation);
