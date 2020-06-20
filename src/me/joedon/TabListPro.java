@@ -237,10 +237,10 @@ public class TabListPro extends JavaPlugin implements Listener, CommandExecutor 
 
     private static Map<String, List<String>> groupAnimationsStripped = new HashMap<>();
     public List<String> getGroupAnimationStripped(String groupID){
-        if(!groupAnimationsStripped.containsKey(groupID)) {
+        if(!groupAnimationsStripped.containsKey(groupID.toLowerCase())) {
             List<String> groupAnimation = new ArrayList<>();
             for (String keys : epsb.groupKeys) {
-                if (keys.replaceAll("groups\\.", "").equalsIgnoreCase(groupID)) {
+                if (keys.replaceAll("groups\\.", "").equalsIgnoreCase(groupID.toLowerCase())) {
                     groupAnimation = getConfig().getStringList("groups." + keys + ".display");
                 }
             }
@@ -250,11 +250,9 @@ public class TabListPro extends JavaPlugin implements Listener, CommandExecutor 
             }
 
             groupAnimationsStripped.put(groupID.toLowerCase(), groupAnimation);
-
-            return groupAnimation;
-        }else{
-            return groupAnimationsStripped.get(groupID);
         }
+
+        return groupAnimationsStripped.get(groupID.toLowerCase());
     }
 
     private static Map<String, Map<Player, List<String>>> groupAnimations = new HashMap<>();
