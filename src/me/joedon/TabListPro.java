@@ -260,26 +260,47 @@ public class TabListPro extends JavaPlugin implements Listener, CommandExecutor 
         return groupAnimationsStripped.get(groupID.toLowerCase());
     }
 
-    private static Map<String, Map<Player, List<String>>> groupAnimations = new HashMap<>();
-    public List<String> getGroupAnimation(String groupID, Player player){
-        groupAnimations.putIfAbsent(groupID, new HashMap<>());
-        groupAnimations.get(groupID).putIfAbsent(player, Lists.newArrayList());
-        if(groupAnimations.get(groupID).get(player).isEmpty()) {
-            List<String> groupAnimation = new ArrayList<>();
-            for (String keys : epsb.groupKeys) {
-                if (keys.replaceAll("groups\\.", "").equalsIgnoreCase(groupID)) {
-                    groupAnimation = getConfig().getStringList("groups." + keys + ".display");
-                }
-            }
 
-            for (int i = 0; i < groupAnimation.size(); i++) {
-                groupAnimation.set(i, PlaceholderAPI.setPlaceholders(player, groupAnimation.get(i)));
-            }
+    private final static String ESSENTIALS_CHAT_FORMAT = "{prestige} {DISPLAYNAME}&r {EP_CHATTAG}&8&l »&r&7 {MESSAGE}";
+    private final static String EXAMPLE_MESSAGE = "Hello!";
+    public static String chatStr(Player player, String tagSuffix){
+        String chatFormat;
 
-            groupAnimations.get(groupID).put(player, groupAnimation);
+        if (!tagSuffix.equals("")) {
+            chatFormat = ChatColor.translateAlternateColorCodes('&', ESSENTIALS_CHAT_FORMAT.replaceAll("\\{prestige}", PlaceholderAPI.setPlaceholders(player, "%ezprestige_prestigetag%")).
+                    replaceAll("\\{DISPLAYNAME}", player.getDisplayName()).replaceAll("\\{EP_CHATTAG}", tagSuffix).replaceAll("\\{MESSAGE}", EXAMPLE_MESSAGE));
+
+        }else{
+            chatFormat = ChatColor.translateAlternateColorCodes('&', ESSENTIALS_CHAT_FORMAT.replaceAll("\\{prestige}", PlaceholderAPI.setPlaceholders(player, "%ezprestige_prestigetag%")).
+                    replaceAll("\\{DISPLAYNAME}", player.getDisplayName()).replaceAll(" \\{EP_CHATTAG}", tagSuffix).replaceAll("\\{MESSAGE}", EXAMPLE_MESSAGE));
+
         }
 
-        return groupAnimations.get(groupID).get(player);
+        return chatFormat;
+    }
+
+
+    private static Map<String, Map<Player, List<String>>> groupAnimations = new HashMap<>();
+    public List<String> getGroupAnimation(String groupID, Player player){
+        return new ArrayList<>();
+//        groupAnimations.putIfAbsent(groupID, new HashMap<>());
+//        groupAnimations.get(groupID).putIfAbsent(player, Lists.newArrayList());
+//        if(groupAnimations.get(groupID).get(player).isEmpty()) {
+//            List<String> groupAnimation = new ArrayList<>();
+//            for (String keys : epsb.groupKeys) {
+//                if (keys.replaceAll("groups\\.", "").equalsIgnoreCase(groupID)) {
+//                    groupAnimation = getConfig().getStringList("groups." + keys + ".display");
+//                }
+//            }
+//
+//            for (int i = 0; i < groupAnimation.size(); i++) {
+//                groupAnimation.set(i, PlaceholderAPI.setPlaceholders(player, groupAnimation.get(i)));
+//            }
+//
+//            groupAnimations.get(groupID).put(player, groupAnimation);
+//        }
+//
+//        return groupAnimations.get(groupID).get(player);
     }
 
     public int getGroupAnimationSpeed(){
