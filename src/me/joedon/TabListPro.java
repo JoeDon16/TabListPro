@@ -46,6 +46,7 @@ public class TabListPro extends JavaPlugin implements Listener, CommandExecutor 
     private NewVersionDetector1132 this9;
     private NewVersionDetector1144 this10;
     private NewVersionDetector1151 this11;
+    private NewVersionDetector116 this12;
     public TabV tabV;
 
     public BukkitTask id = null;
@@ -125,6 +126,10 @@ public class TabListPro extends JavaPlugin implements Listener, CommandExecutor 
                 break;
             case "v1_15_R1":
                 this.tabV = new NewVersionDetector1151(this11);
+                Bukkit.getServer().getPluginManager().registerEvents(this, this);
+                break;
+            case "v1_16_R1":
+                this.tabV = new NewVersionDetector116(this12);
                 Bukkit.getServer().getPluginManager().registerEvents(this, this);
                 break;
             default:
@@ -261,7 +266,7 @@ public class TabListPro extends JavaPlugin implements Listener, CommandExecutor 
     }
 
 
-    private final static String ESSENTIALS_CHAT_FORMAT = "{prestige} {DISPLAYNAME}&r {EP_CHATTAG}&8&l »&r&7 {MESSAGE}";
+    private final static String ESSENTIALS_CHAT_FORMAT = "{prestige} {DISPLAYNAME}&r{EP_CHATTAG}&8&l »&r&7 {MESSAGE}";
     private final static String EXAMPLE_MESSAGE = "Hello!";
     public static String chatStr(Player player, String tagSuffix){
         String chatFormat;
