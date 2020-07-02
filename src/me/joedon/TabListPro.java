@@ -3,6 +3,7 @@ package me.joedon;
 import com.google.common.collect.Lists;
 import com.google.common.io.ByteStreams;
 import it.unimi.dsi.fastutil.Hash;
+import me.clip.ezrankspro.EZRanksPro;
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.joedon.scoreboard.EPScoreboard;
 import me.joedon.scoreboard.UpdatePlayers;
@@ -170,6 +171,10 @@ public class TabListPro extends JavaPlugin implements Listener, CommandExecutor 
         hf.tabHeader();
         hf.tabFooter();
         hf.tabRefresh();
+
+        if(Bukkit.getServer().getPluginManager().isPluginEnabled("EZRanksPro")){
+            EPScoreboard.ezapi = EZRanksPro.getAPI();
+        }
     }
 
     private void loadResource(String resource) {

@@ -1,5 +1,7 @@
 package me.joedon.scoreboard;
 
+import me.clip.ezrankspro.EZAPI;
+import me.clip.ezrankspro.EZRanksPro;
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.joedon.TabListPro;
 import org.bukkit.ChatColor;
@@ -82,6 +84,7 @@ public class EPScoreboard {
     private final boolean HIGHEST_PRESTIGES_FIRST = true;
     //IF THIS IS 10+, add '0's in front when sorting (normal sorts already have)
     private final int MAX_PRESTIGES = 8;
+    public static EZAPI ezapi = null;
 
     private final List<String> RANKS = Arrays.asList("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N",
             "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z");
@@ -114,6 +117,9 @@ public class EPScoreboard {
 
             //-=- PRIVATE EMERALDPRISONMC.COM VERSION -=-
         }else{
+            if(ezapi == null){
+                return "";
+            }
 
             //Joedon (Owner)
             if(p.getUniqueId().toString().equals("c8cf896c-bfc9-406d-b2a6-8999b86b0a9d")){
@@ -127,7 +133,7 @@ public class EPScoreboard {
             if(p.hasPermission("epc.helper")){
                 if (HIGHEST_PRESTIGES_FIRST) {
                     //00000 + inverted prestige number (<10) + fixed inverted rank index
-                    String rank = ChatColor.stripColor(p.getPlayerListName()).replaceAll(":", "").substring(4, 5);
+                    String rank = ezapi.getCurrentRank(p).substring(0, 1);
 
 
                     int invertedRankIndex = RANKS.size() - RANKS.indexOf(rank);
@@ -160,7 +166,8 @@ public class EPScoreboard {
 
                 //inverted prestige number (<10> + fixed inverted rank index
               //  System.out.println(p.getPlayerListName());
-                String rank = ChatColor.stripColor(p.getPlayerListName()).replaceAll(":", "").substring(4, 5);
+
+                String rank = ezapi.getCurrentRank(p).substring(0, 1);
 
                 int invertedRankIndex = RANKS.size() - RANKS.indexOf(rank);
 
@@ -180,7 +187,7 @@ public class EPScoreboard {
                     return (MAX_PRESTIGES - Integer.valueOf(PlaceholderAPI.setPlaceholders(p, "%ezprestige_prestige%")) + "000" + invertedRankIndex + "TLPS");
                 }
             } else {
-                String rank = ChatColor.stripColor(p.getDisplayName()).replaceAll(":", "").replaceAll("!", "").substring(4, 5);
+                String rank = ezapi.getCurrentRank(p).substring(0, 1);
 
                 //prestige number (<10) + rank letter
                 return Integer.valueOf(PlaceholderAPI.setPlaceholders(p, "%ezprestige_prestige%")) + rank;
