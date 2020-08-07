@@ -73,18 +73,18 @@ public class UpdateScoreboard {
                     if (plugin.epsb.updateFrame < list.size()) {
                         if (TabListPro.placeholderapi) {
                             playerTabText = PlaceholderAPI.setPlaceholders(p, list.get(plugin.epsb.updateFrame));
-                            p.setPlayerListName(ChatColor.translateAlternateColorCodes('&', playerTabText.replaceAll("%player%", p.getName())/*.replaceAll("%placeholder%", playerPlaceheld.get(uuid))*/.replaceAll("%player_displayname%", p.getDisplayName())));
+                            p.setPlayerListName(plugin.colorString(playerTabText.replaceAll("%player%", p.getName())/*.replaceAll("%placeholder%", playerPlaceheld.get(uuid))*/.replaceAll("%player_displayname%", p.getDisplayName())));
                         } else {
                             playerTabText = list.get(plugin.epsb.updateFrame);
-                            p.setPlayerListName(ChatColor.translateAlternateColorCodes('&', playerTabText.replaceAll("%player%", p.getName())/*.replaceAll("%placeholder%", playerPlaceheld.get(uuid))*/.replaceAll("%player_displayname%", p.getDisplayName())));
+                            p.setPlayerListName(plugin.colorString(playerTabText.replaceAll("%player%", p.getName())/*.replaceAll("%placeholder%", playerPlaceheld.get(uuid))*/.replaceAll("%player_displayname%", p.getDisplayName())));
                         }
                     } else {
                         if (TabListPro.placeholderapi) {
                             playerTabText = PlaceholderAPI.setPlaceholders(p, list.get(list.size() - 1));
-                            p.setPlayerListName(ChatColor.translateAlternateColorCodes('&', playerTabText/*.replaceAll("%placeholder%", playerPlaceheld.get(uuid))*/.replaceAll("%player%", p.getName()).replaceAll("%player_displayname%", p.getDisplayName())));
+                            p.setPlayerListName(plugin.colorString(playerTabText/*.replaceAll("%placeholder%", playerPlaceheld.get(uuid))*/.replaceAll("%player%", p.getName()).replaceAll("%player_displayname%", p.getDisplayName())));
                         } else {
                             playerTabText = list.get(list.size() - 1);
-                            p.setPlayerListName(ChatColor.translateAlternateColorCodes('&', playerTabText/*.replaceAll("%placeholder%", playerPlaceheld.get(uuid))*/.replaceAll("%player%", p.getName()).replaceAll("%player_displayname%", p.getDisplayName())));
+                            p.setPlayerListName(plugin.colorString(playerTabText/*.replaceAll("%placeholder%", playerPlaceheld.get(uuid))*/.replaceAll("%player%", p.getName()).replaceAll("%player_displayname%", p.getDisplayName())));
                         }
                     }
 

@@ -27,6 +27,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class TabListPro extends JavaPlugin implements Listener, CommandExecutor {
 
@@ -216,6 +218,30 @@ public class TabListPro extends JavaPlugin implements Listener, CommandExecutor 
         }
     }
 
+    private static final char COLOR_CHAR = ChatColor.COLOR_CHAR;
+    private static final String startTag = "#";
+    private static final String endTag = "";
+
+    public static String colorString(String message){
+
+            final Pattern hexPattern = Pattern.compile(startTag + "([A-Fa-f0-9]{6})" + endTag);
+            Matcher matcher = hexPattern.matcher(message);
+            StringBuffer buffer = new StringBuffer(message.length() + 4 * 8);
+            while (matcher.find())
+            {
+                String group = matcher.group(1);
+                matcher.appendReplacement(buffer, COLOR_CHAR + "x"
+                        + COLOR_CHAR + group.charAt(0) + COLOR_CHAR + group.charAt(1)
+                        + COLOR_CHAR + group.charAt(2) + COLOR_CHAR + group.charAt(3)
+                        + COLOR_CHAR + group.charAt(4) + COLOR_CHAR + group.charAt(5)
+                );
+            }
+
+            String hexTranslated = matcher.appendTail(buffer).toString();
+
+            return ChatColor.translateAlternateColorCodes('&', hexTranslated);
+    }
+
     // API
 
     private static TabListPro apiinstance;
@@ -277,11 +303,11 @@ public class TabListPro extends JavaPlugin implements Listener, CommandExecutor 
         String chatFormat;
 
         if (!tagSuffix.equals("")) {
-            chatFormat = ChatColor.translateAlternateColorCodes('&', ESSENTIALS_CHAT_FORMAT.replaceAll("\\{prestige}", PlaceholderAPI.setPlaceholders(player, "%ezprestige_prestigetag%")).
+            chatFormat = colorString(ESSENTIALS_CHAT_FORMAT.replaceAll("\\{prestige}", PlaceholderAPI.setPlaceholders(player, "%ezprestige_prestigetag%")).
                     replaceAll("\\{DISPLAYNAME}", player.getDisplayName()).replaceAll("\\{EP_CHATTAG}", tagSuffix).replaceAll("\\{MESSAGE}", EXAMPLE_MESSAGE));
 
         }else{
-            chatFormat = ChatColor.translateAlternateColorCodes('&', ESSENTIALS_CHAT_FORMAT.replaceAll("\\{prestige}", PlaceholderAPI.setPlaceholders(player, "%ezprestige_prestigetag%")).
+            chatFormat = colorString(ESSENTIALS_CHAT_FORMAT.replaceAll("\\{prestige}", PlaceholderAPI.setPlaceholders(player, "%ezprestige_prestigetag%")).
                     replaceAll("\\{DISPLAYNAME}", player.getDisplayName()).replaceAll(" \\{EP_CHATTAG}", tagSuffix).replaceAll("\\{MESSAGE}", EXAMPLE_MESSAGE));
 
         }

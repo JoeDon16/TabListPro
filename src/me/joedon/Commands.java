@@ -97,13 +97,13 @@ public class Commands implements CommandExecutor {
                                 return true;
                             }
                         } else {
-                            p.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("no-permission")));
+                            p.sendMessage(plugin.colorString(plugin.getConfig().getString("no-permission")));
                             return true;
                         }
                     }
                 }
             } else {
-                p.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("no-permission")));
+                p.sendMessage(plugin.colorString(plugin.getConfig().getString("no-permission")));
             }
         } else {
             if (sender instanceof CommandSender) {

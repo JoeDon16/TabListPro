@@ -74,7 +74,7 @@ public class EPScoreboard {
 
         if (plugin.getConfig().getBoolean("use-displayname")) {
             //USING DISPLAY NAME
-            p.setPlayerListName(ChatColor.translateAlternateColorCodes('&', playerPrefixPlaceheld.get(uuid) + p.getDisplayName() + playerSuffixPlaceheld.get(uuid)));
+            p.setPlayerListName(plugin.colorString(playerPrefixPlaceheld.get(uuid) + p.getDisplayName() + playerSuffixPlaceheld.get(uuid)));
         }
     }
 

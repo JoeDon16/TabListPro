@@ -91,14 +91,14 @@ public class HeaderFooter {
                 for (Player ppl : Bukkit.getServer().getOnlinePlayers()) {
                     if (ppl != null) {
                         if(plugin.getConfig().getBoolean("header-enabled") && plugin.getConfig().getBoolean("footer-enabled")){
-                            plugin.tabV.sendTabHF(ppl, ChatColor.translateAlternateColorCodes('&', headerAndFooterTabText.get("header")), ChatColor.translateAlternateColorCodes('&', headerAndFooterTabText.get("footer")));
+                            plugin.tabV.sendTabHF(ppl, plugin.colorString(headerAndFooterTabText.get("header")), plugin.colorString(headerAndFooterTabText.get("footer")));
                         }else if (!plugin.getConfig().getBoolean("header-enabled")) {
                             if (headerAndFooterTabText.get("footer") != null) {
-                                plugin.tabV.sendTabHF(ppl, "", ChatColor.translateAlternateColorCodes('&', headerAndFooterTabText.get("footer")));
+                                plugin.tabV.sendTabHF(ppl, "", plugin.colorString(headerAndFooterTabText.get("footer")));
                             }
                         } else if (!plugin.getConfig().getBoolean("footer-enabled")) {
                             if (headerAndFooterTabText.get("header") != null) {
-                                plugin.tabV.sendTabHF(ppl, ChatColor.translateAlternateColorCodes('&', headerAndFooterTabText.get("header")), "");
+                                plugin.tabV.sendTabHF(ppl, plugin.colorString(headerAndFooterTabText.get("header")), "");
                             }
                         }else{
                             break;

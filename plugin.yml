@@ -1,7 +1,7 @@
 name: TabListPro
 author: Joedon
 main: me.joedon.TabListPro
-version: 1.1.2
+version: 1.2.0
 softdepend: [PlaceholderAPI]
 commands:
     tablistpro:
