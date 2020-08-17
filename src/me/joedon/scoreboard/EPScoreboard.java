@@ -83,7 +83,7 @@ public class EPScoreboard {
     public final boolean EP_VERSION = false;
     private final boolean HIGHEST_PRESTIGES_FIRST = true;
     //IF THIS IS 10+, add '0's in front when sorting (normal sorts already have)
-    private final int MAX_PRESTIGES = 8;
+    private final int MAX_PRESTIGES = 88;
     public static EZAPI ezapi = null;
 
     private final List<String> RANKS = Arrays.asList("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N",

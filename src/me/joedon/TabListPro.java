@@ -50,6 +50,7 @@ public class TabListPro extends JavaPlugin implements Listener, CommandExecutor 
     private NewVersionDetector1144 this10;
     private NewVersionDetector1151 this11;
     private NewVersionDetector116 this12;
+    private NewVersionDetector1162 this13;
     public TabV tabV;
 
     public BukkitTask id = null;
@@ -133,6 +134,10 @@ public class TabListPro extends JavaPlugin implements Listener, CommandExecutor 
                 break;
             case "v1_16_R1":
                 this.tabV = new NewVersionDetector116(this12);
+                Bukkit.getServer().getPluginManager().registerEvents(this, this);
+                break;
+            case "v1_16_R2":
+                this.tabV = new NewVersionDetector1162(this13);
                 Bukkit.getServer().getPluginManager().registerEvents(this, this);
                 break;
             default:
