@@ -130,67 +130,49 @@ public class EPScoreboard {
                 return "0000000000TLPS";
             }
 
+            // 'A'-Rank
+            String rank = ezapi.getCurrentRank(p).substring(0, 1);
+            // if Z, -> A.
+            String invertedRank = RANKS.get(RANKS.size() - RANKS.indexOf(rank)).toUpperCase();
+
+            int prestige = Integer.parseInt(PlaceholderAPI.setPlaceholders(p, "%ezprestige_prestige%"));
+
             if(p.hasPermission("epc.helper")){
                 if (HIGHEST_PRESTIGES_FIRST) {
-                    //00000 + inverted prestige number (<10) + fixed inverted rank index
-                    String rank = ezapi.getCurrentRank(p).substring(0, 1);
-
-
-                    int invertedRankIndex = RANKS.size() - RANKS.indexOf(rank);
-                    if(invertedRankIndex >= 999) {
-                        //00000 5555TLPS
-                        return "00000" + (MAX_PRESTIGES - Integer.valueOf(PlaceholderAPI.setPlaceholders(p, "%ezprestige_prestige%")) + invertedRankIndex + "TLPS");
-                    }else if(invertedRankIndex >= 99){
-                        //00000 0555TLPS
-                        return "00000" + (MAX_PRESTIGES - Integer.valueOf(PlaceholderAPI.setPlaceholders(p, "%ezprestige_prestige%")) + "0" + invertedRankIndex + "TLPS");
-                    }else if(invertedRankIndex >= 9){
-                        //00000 0055TLPS
-                        return "00000" + (MAX_PRESTIGES - Integer.valueOf(PlaceholderAPI.setPlaceholders(p, "%ezprestige_prestige%")) + "00" + invertedRankIndex + "TLPS");
-                    }else{
-                        //00000 0005TLPS
-                        return "00000" + (MAX_PRESTIGES - Integer.valueOf(PlaceholderAPI.setPlaceholders(p, "%ezprestige_prestige%")) + "000" + invertedRankIndex + "TLPS");
-                    }
+                    return MAX_PRESTIGES - prestige >= 10 ?
+                            "00" + (MAX_PRESTIGES - prestige) + invertedRank :
+                            "000" + (MAX_PRESTIGES - prestige) + invertedRank;
+                }else{
+                    return prestige >= 10 ?
+                            "00" + (prestige) + invertedRank :
+                            "000" + (prestige) + invertedRank;
                 }
             }
 
-            //epc.purchase USE AFTER RESET
-
             if (HIGHEST_PRESTIGES_FIRST) {
 
-                /*
-                System.out.println(RANKS.size() - RANKS.indexOf(perm.getPrimaryGroup(p).substring(0, 1).toUpperCase()));
-                System.out.println(Integer.toBinaryString(RANKS.size() - RANKS.indexOf(perm.getPrimaryGroup(p).substring(0, 1).toUpperCase())));
-                System.out.println(MAX_PRESTIGES - Integer.valueOf(PlaceholderAPI.setPlaceholders(p, "%ezprestige_prestige%")));
-                System.out.println(p.getName());
-                */
+                //  -> MAX_PRESTIGES - prestige >= 10 {
+                // P40, Z -> 48A
+                // P7, Z -> 81A
+                // P7, A -> 81Z
+                //  ->  } else {
+                // P82, Z -> 06A
+                // P87, Z -> 01A
 
-                //inverted prestige number (<10> + fixed inverted rank index
-              //  System.out.println(p.getPlayerListName());
+                return MAX_PRESTIGES - prestige >= 10 ?
+                        (MAX_PRESTIGES - prestige) + invertedRank :
+                        "0" + (MAX_PRESTIGES - prestige) + invertedRank;
 
-                String rank = ezapi.getCurrentRank(p).substring(0, 1);
-
-                int invertedRankIndex = RANKS.size() - RANKS.indexOf(rank);
-
-              //  System.out.println((MAX_PRESTIGES - Integer.valueOf(PlaceholderAPI.setPlaceholders(p, "%ezprestige_prestige%")) + "***" + invertedRankIndex + "TLPS"));
-
-                if(invertedRankIndex >= 999) {
-                    //5555TLPS
-                    return (MAX_PRESTIGES - Integer.valueOf(PlaceholderAPI.setPlaceholders(p, "%ezprestige_prestige%")) + invertedRankIndex + "TLPS");
-                }else if(invertedRankIndex >= 99){
-                    //0555TLPS
-                    return (MAX_PRESTIGES - Integer.valueOf(PlaceholderAPI.setPlaceholders(p, "%ezprestige_prestige%")) + "0" + invertedRankIndex + "TLPS");
-                }else if(invertedRankIndex >= 9){
-                    //0055TLPS
-                    return (MAX_PRESTIGES - Integer.valueOf(PlaceholderAPI.setPlaceholders(p, "%ezprestige_prestige%")) + "00" + invertedRankIndex + "TLPS");
-                }else{
-                    //0005TLPS
-                    return (MAX_PRESTIGES - Integer.valueOf(PlaceholderAPI.setPlaceholders(p, "%ezprestige_prestige%")) + "000" + invertedRankIndex + "TLPS");
-                }
             } else {
-                String rank = ezapi.getCurrentRank(p).substring(0, 1);
 
-                //prestige number (<10) + rank letter
-                return Integer.valueOf(PlaceholderAPI.setPlaceholders(p, "%ezprestige_prestige%")) + rank;
+                // P2, Z -> 02A
+                // P40, Z -> 40A
+                // P87, A -> 87Z
+
+                return prestige >= 10 ?
+                        (prestige) + invertedRank :
+                        "0" + (prestige) + invertedRank;
+
             }
         }
     }
