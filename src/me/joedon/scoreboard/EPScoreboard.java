@@ -133,9 +133,14 @@ public class EPScoreboard {
             // 'A'-Rank
             String rank = ezapi.getCurrentRank(p).substring(0, 1);
             // if Z, -> A.
-            String invertedRank = RANKS.get(RANKS.size() - RANKS.indexOf(rank)).toUpperCase();
+            String invertedRank = RANKS.get(RANKS.size() - RANKS.indexOf(rank) - 1).toUpperCase();
 
             int prestige = Integer.parseInt(PlaceholderAPI.setPlaceholders(p, "%ezprestige_prestige%"));
+
+//            System.out.println("max " + MAX_PRESTIGES);
+//            System.out.println("prestige " + prestige);
+//            System.out.println(MAX_PRESTIGES - prestige);
+//            System.out.println("invert: " + invertedRank);
 
             if(p.hasPermission("epc.helper")){
                 if (HIGHEST_PRESTIGES_FIRST) {
@@ -156,8 +161,8 @@ public class EPScoreboard {
                 // P7, Z -> 81A
                 // P7, A -> 81Z
                 //  ->  } else {
-                // P82, Z -> 06A
                 // P87, Z -> 01A
+                // P82, Z -> 06A
 
                 return MAX_PRESTIGES - prestige >= 10 ?
                         (MAX_PRESTIGES - prestige) + invertedRank :
